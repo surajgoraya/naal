@@ -3,7 +3,7 @@
 <p align="center">
     <img width="150" height="150" src="https://user-images.githubusercontent.com/4347494/102924063-d66cc800-445e-11eb-9218-f4332ab98e71.png">
    
-   <p align="center">naal – logo</p>
+   <p align="center">naal ਨਾਲ (nāl) – meaning "with"</p>
 </p>
 
 
