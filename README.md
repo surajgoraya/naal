@@ -39,4 +39,4 @@ naal uses GitHub as it's storage medium for short-link mappings, as well as usin
 * Callback URL should be set as `{Your Hostname}/auth/authenticated` 
 
 ## Managing links:
-- This is done through an interface which currently hardcoded to be available at `/bossman` because I have a dumb sense of humor, although, I suspect I'll make this a variable in the future.
+- This is done through an interface (pictured above) which currently hardcoded to be available at `/bossman` because I have a dumb sense of humor, although, I suspect I'll make this a variable in the future.
