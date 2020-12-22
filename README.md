@@ -1,7 +1,9 @@
 # naal - 🔗  A short-link service 
 ![naal admin panel](https://user-images.githubusercontent.com/4347494/102921346-3c0a8580-445a-11eb-846c-a9d881170b09.png)
+<p align="center">
+    <img width="256" height="256" src="https://user-images.githubusercontent.com/4347494/102923461-ca343b00-445d-11eb-9ac7-dda8fa2c0a7e.png">
+</p>
 
-![naal-logo](https://user-images.githubusercontent.com/4347494/102923461-ca343b00-445d-11eb-9ac7-dda8fa2c0a7e.png)
 
 ## What Is it?
 Simply put, naal is a self-hosted, short-linking service. It was born out of both curiosity, as well as none of the existing services fitting my relatively simple needs. __Would I recommend using this as a large scale prod application?__ _No, pls_ - I mostly made this to learn :)
