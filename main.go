@@ -82,6 +82,12 @@ func main() {
 			log.Println("200 - CALLBACKED")
 			respToken := strings.Split(string(resp.Data), "=")
 			authToken := strings.Split(respToken[1], "&")[0]
+
+			if authToken == "bad_verification_code" {
+				println("ERROR: GitHub returned bad AuthCode")
+				return fiber.NewError(fiber.StatusUnauthorized, "Stale Authorization Code.")
+			}
+
 			log.Println("200 - NEW OUATH TOKEN RECIEVED & PROCESSED")
 
 			//verify that user has access to access_control
@@ -120,8 +126,13 @@ func main() {
 			return c.SendStatus(404)
 		}
 	})
+	port := os.Getenv("PORT")
 
-	app.Listen(":3001")
+	if port == "" {
+		port = "3000"
+	}
+
+	app.Listen(":" + port)
 }
 
 func checkAccessControl(authToken string) bool {
@@ -138,7 +149,9 @@ func checkAccessControl(authToken string) bool {
 	repos, _, err := client.Repositories.List(ctx, "", nil)
 
 	if err != nil {
-		panic("Error getting repository Inforamtion")
+		println("ERROR: Cannot get repository information, likely a bad authocde")
+		return false
+		// panic("Error getting repository Inforamtion")
 	}
 
 	for _, v := range repos {
