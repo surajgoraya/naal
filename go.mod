@@ -4,6 +4,7 @@ go 1.15
 
 require (
 	github.com/andybalholm/brotli v1.0.1 // indirect
+	github.com/buger/jsonparser v1.0.0
 	github.com/go-resty/resty/v2 v2.3.0
 	github.com/gofiber/fiber/v2 v2.3.0
 	github.com/gofiber/redirect/v2 v2.1.0

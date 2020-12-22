@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"log"
 	"os"
@@ -15,9 +16,18 @@ import (
 	"golang.org/x/oauth2"
 )
 
+type Link struct {
+	Links []struct {
+		LinkID    string `json:"linkID"`
+		LinkTitle string `json:"linkTitle"`
+		LinkTo    string `json:"linkTo"`
+	} `json:"links"`
+}
+
 func main() {
 
 	err := godotenv.Load(".env")
+
 	if err != nil {
 		log.Fatal("Error loading .env file")
 	}
@@ -25,12 +35,14 @@ func main() {
 	app := fiber.New()
 
 	app.Static("/bossman", "./naal-admin/build")
+	app.Static("/bossman/*", "./naal-admin/build")
+	app.Static("/auth/imposter", "./internal_static")
 
 	app.Get("/auth/authenticate", func(c *fiber.Ctx) error {
 		clientID := os.Getenv("GITHUB_CLIENTID")
 		baseURL := "https://github.com/login/oauth/authorize?scope=user repo admin:read:org&client_id="
 		generate := fmt.Sprintf("%s%s", baseURL, clientID)
-		log.Println(generate)
+		log.Println("Sending Request to get OAUTH Token: " + generate)
 		return c.Redirect(generate)
 	})
 
@@ -67,10 +79,10 @@ func main() {
 			log.Println("ERROR: Github API rejected")
 			return fiber.NewError(fiber.StatusServiceUnavailable, "GitHub API Error.")
 		} else {
-			log.Println("Authenticated: ", resp.Code, string(resp.Data), err)
+			log.Println("200 - CALLBACKED")
 			respToken := strings.Split(string(resp.Data), "=")
 			authToken := strings.Split(respToken[1], "&")[0]
-			log.Println(authToken)
+			log.Println("200 - NEW OUATH TOKEN RECIEVED & PROCESSED")
 
 			//verify that user has access to access_control
 			if checkAccessControl(authToken) == true {
@@ -93,10 +105,20 @@ func main() {
 
 	})
 
-	app.Static("/auth/imposter", "./internal_static")
-
 	app.Get("/*", func(c *fiber.Ctx) error {
-		return c.SendString("Hello world! 👳🏻‍♂️👋🏽")
+		// return c.Redirect(checkRedir(c.Path()))
+		if c.Path() != "/favicon.ico" {
+			result := checkRedir(c.Path())
+			if result == "/notFound" {
+				return c.SendStatus(404)
+			} else if result == "/serverError" {
+				return c.SendStatus(500)
+			} else {
+				return c.Redirect(result)
+			}
+		} else {
+			return c.SendStatus(404)
+		}
 	})
 
 	app.Listen(":3001")
@@ -116,7 +138,7 @@ func checkAccessControl(authToken string) bool {
 	repos, _, err := client.Repositories.List(ctx, "", nil)
 
 	if err != nil {
-		panic("error")
+		panic("Error getting repository Inforamtion")
 	}
 
 	for _, v := range repos {
@@ -125,4 +147,37 @@ func checkAccessControl(authToken string) bool {
 		}
 	}
 	return (false)
+}
+
+func checkRedir(redirectAsk string) string {
+
+	headers := map[string]string{"User-Agent": "naal/0.1.0 (+https://github.com/surajgoraya/naal)"}
+
+	test := os.Getenv("CHECK_URL")
+	client := request.Client{
+		URL:    test,
+		Method: "GET",
+		Header: headers,
+	}
+	log.Println("Sending Request to GitHub For -" + redirectAsk)
+	resp, err := client.Do()
+
+	if err != nil {
+		log.Println(resp, err)
+		panic(err)
+	}
+	if resp.Code == 200 {
+		var allLinks Link
+		json.Unmarshal(resp.Data, &allLinks)
+		for _, v := range allLinks.Links {
+			// println(v.LinkID, redirectAsk)
+			if v.LinkID == redirectAsk {
+
+				return v.LinkTo
+			}
+		}
+		return "/notFound"
+	} else {
+		return "/serverError"
+	}
 }
