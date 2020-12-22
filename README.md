@@ -8,7 +8,7 @@
 
 
 ## What Is it?
-Simply put, naal is a self-hosted, short-linking service. It was born out of both curiosity, as well as none of the existing services fitting my relatively simple needs. __Would I recommend using this as a large scale prod application?__ _No, pls_ - I mostly made this to learn :)
+Simply put, naal is a self-hosted, short-linking (akin to something like bit.ly) service. It was born out of both curiosity, as well as none of the existing services fitting my relatively simple needs. __Would I recommend using this as a large scale prod application?__ _No, pls_ - I mostly made this to learn :)
 
 ## How it works
 naal uses GitHub as it's storage medium for short-link mappings, as well as using as a means of authentication and management. The server simply looks up the current redirection mapping stored in the repo and upon a request it redirects the user based on the mapping.
