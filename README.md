@@ -2,6 +2,8 @@
 ![naal admin panel](https://user-images.githubusercontent.com/4347494/102921346-3c0a8580-445a-11eb-846c-a9d881170b09.png)
 <p align="center">
     <img width="256" height="256" src="https://user-images.githubusercontent.com/4347494/102923461-ca343b00-445d-11eb-9ac7-dda8fa2c0a7e.png">
+   
+   <p align="center">naal – logo</p>
 </p>
 
 
