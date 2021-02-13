@@ -1,5 +1,4 @@
 # naal - 🔗  A short-link service 
-![naal admin panel](https://user-images.githubusercontent.com/4347494/102921346-3c0a8580-445a-11eb-846c-a9d881170b09.png)
 <p align="center">
     <img width="150" height="150" src="https://user-images.githubusercontent.com/4347494/102924063-d66cc800-445e-11eb-9218-f4332ab98e71.png">
    
